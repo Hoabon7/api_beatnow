@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Repository\UserBaseRepository;
 use App\Service\NormalUserService;
 use Illuminate\Support\Facades\Auth;
+use Firebase\JWT\JWK;
+use Firebase\JWT\JWT;
 
 class LoginController extends Controller
 {
@@ -23,40 +25,76 @@ class LoginController extends Controller
         $this->userService=$userService;
     }
     /**
+     * check login of App,use JWT
+     */
+    public function checkLoginApple($token,$provider){
+        // return ($token);
+        //return $provider;
+        $checkToken=true;
+        $keySet=config('global.KEY_SET');
+        try {
+            //convert keySet from json to array
+            $convertKeySet = json_decode($keySet,true); //READ_FROM_APPLE_KEYSET_URL & CONVERT_TO_ARRAY
+            $dataUser=JWT::decode($token, JWK::parseKeySet($convertKeySet), [ 'RS256' ]);
+            $user['email']=$dataUser->email;
+            $user['id']=$dataUser->sub;
+
+            
+        } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
+            $checkToken=false;
+        }
+        if($checkToken==false) return $this->responseFail("Token khong duoc truy cap!");
+        return $this->login($user,$provider);
+    }
+    /**
      * check google hay facebook
      */
     public function checkLogin(Request $request){
         $token=$request->token;
         $provider=$request->provider;
-        if($provider==User::FACEBOOK) $url="https://graph.facebook.com/v6.0/me?fields=id,name,email,first_name,middle_name,last_name,birthday,gender,picture&access_token=$token";
-        if($provider==User::GOOGLE) $url="https://www.googleapis.com/oauth2/v3/userinfo?access_token=$token";
-        $checkToken=true;
-        try {
-            $response = file_get_contents($url);
-            $data=json_decode($response);
-        } catch (\Throwable $th) {
-            Log::debug($th->getMessage());
-            $checkToken=false;
+        if($this->userService->checkProvider($provider)==true){
+            if($provider==User::FACEBOOK) $url="https://graph.facebook.com/v6.0/me?fields=id,name,email,first_name,middle_name,last_name,birthday,gender,picture&access_token=$token";
+            if($provider==User::GOOGLE) $url="https://www.googleapis.com/oauth2/v3/userinfo?access_token=$token";
+            if($provider==User::APPLE) return $this->checkLoginApple($token,$provider);
+            $checkToken=true;
+            try {
+                $response = file_get_contents($url);
+                $dataUser=json_decode($response);
+            } catch (\Throwable $th) {
+                Log::debug($th->getMessage());
+                $checkToken=false;
+            }
+            if($checkToken==false) 
+                $this->responseBadRequest("Bad request!");
+            return $this->login($dataUser,$provider);
+        }else{
+            return $this->responseBadRequest("provider khong duoc truy cap!");
         }
-        if($checkToken==false) 
-            return response()->json([
-                    "success"=>"bad request"
-            ],400);
-        return $this->login($data,$provider);
     }
     /**
      * login
      */
-    public function login($data,$provider){
-     
-        if(User::GOOGLE==$provider){
-            $data=$this->loginWithGoogle($data);
-            return $data;
+    public function login($dataUser,$provider){
+       
+        try {
+            if(User::GOOGLE==$provider){
+                $user=$this->loginWithGoogle($dataUser);
+                return $user;
+            }
+            if(User::FACEBOOK==$provider){
+                $user=$this->loginWithFaceBook($dataUser);
+                return $user;
+            }
+            if(User::APPLE==$provider){
+                $user=$this->loginWithApple($dataUser);
+                return $user;
+            }
+        } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
+            return $this->responseFail("provider không được phép !");
         }
-        if(User::FACEBOOK==$provider){
-            $data=$this->loginWithFaceBook($data);
-            return $data;
-        }
+        
     }
    /**
     * login with facebook
@@ -81,6 +119,16 @@ class LoginController extends Controller
         }
         return $this->userService->createUserToken($user);
         
+   }
+
+   public function loginWithApple($dataUser){
+        //return $dataUser['email'];
+        $user = User::where('provider_id', '=', $dataUser['id'])->first();
+        if(!isset($user)){
+            $data=$this->userBaseRepository->insertUserApple($dataUser);
+            return $this->userService->createUserToken($data);
+        }
+        return $this->userService->createUserToken($user);
    }
   /**
    * logout

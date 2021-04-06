@@ -29,6 +29,14 @@ class UserBaseRepository implements EloquentQueryInterface{
             $user->save();
         return $user;
     }
+    public function insertUserApple($dataUser){
+        $user=new User;
+            $user->email=$dataUser['email'];
+            $user->provider_id=$dataUser['id'];
+            $user->provider=User::APPLE;
+            $user->save();
+        return $user;
+    }
     public function getUser($id){
 
     }

@@ -2,8 +2,10 @@
 namespace App\Service;
 
 use Carbon\Carbon;
+use App\Models\User;
 
-class NormalUserService{
+
+class NormalUserService {
     public function createUserToken($dataUser){
         $tokenResult = $dataUser->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -15,5 +17,10 @@ class NormalUserService{
                 $tokenResult->token->expires_at
             )->toDateTimeString()
         ]);
+   }
+   public function checkProvider($provider){
+        if($provider==User::FACEBOOK||$provider==User::APPLE||$provider==User::GOOGLE) return true;
+        else return false;
+            
    }
 }
