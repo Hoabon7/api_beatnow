@@ -14,7 +14,7 @@ class AddColumnExpireTimeToTableUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('expire_time')->default(null);
+            $table->integer('expire_time')->default(0);
         });
     }
 

@@ -53,7 +53,7 @@ class LoginController extends Controller
     public function checkLogin(Request $request){
         $token=$request->token;
         $provider=$request->provider;
-        if($this->userService->checkProvider($provider)==true){
+        if($provider==User::FACEBOOK||$provider==User::APPLE||$provider==User::GOOGLE){
             if($provider==User::FACEBOOK) $url="https://graph.facebook.com/v6.0/me?fields=id,name,email,first_name,middle_name,last_name,birthday,gender,picture&access_token=$token";
             if($provider==User::GOOGLE) $url="https://www.googleapis.com/oauth2/v3/userinfo?access_token=$token";
             if($provider==User::APPLE) return $this->checkLoginApple($token,$provider);
