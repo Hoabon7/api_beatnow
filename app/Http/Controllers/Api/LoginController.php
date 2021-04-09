@@ -92,7 +92,7 @@ class LoginController extends Controller
             }
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
-            return $this->responseFail("provider không được phép !");
+            return $this->responseFail("provider không được phép 2 !");
         }
         
     }
@@ -101,6 +101,7 @@ class LoginController extends Controller
     */
    public function loginWithFaceBook($dataUser){
         $user = User::where('provider_id', '=', $dataUser->id)->first();
+        
         if(!isset($user) ){
             $data=$this->userBaseRepository->insertUserFacebook($dataUser);
             return $this->userService->createUserToken($data);

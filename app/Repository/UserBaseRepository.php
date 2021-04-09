@@ -11,12 +11,20 @@ class UserBaseRepository implements UserQueryInterface{
     public function insertUserFacebook($dataUser){
         $user=new User;
             $user->name=$dataUser->name;
-            $user->email=$dataUser->email;
-            $user->provider_id=$dataUser->id;
-            $user->provider=User::FACEBOOK;
-            $user->avatar=$dataUser->picture->data->url;
-            $user->save();
-        return $user;
+            if(isset($dataUser->email)){
+                $user->email=$dataUser->email;
+                $user->provider_id=$dataUser->id;
+                $user->provider=User::FACEBOOK;
+                $user->avatar=$dataUser->picture->data->url;
+                $user->save();
+            } 
+            else {
+                $user->provider_id=$dataUser->id;
+                $user->provider=User::FACEBOOK;
+                $user->avatar=$dataUser->picture->data->url;
+                $user->save();
+            }
+       return $user;
     }
 
     public function insertUserGoogle($dataUser){
