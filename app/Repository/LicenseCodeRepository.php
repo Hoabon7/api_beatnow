@@ -56,7 +56,7 @@ class LicenseCodeRepository implements LicenseCodeInterface{
         $timeCreated=$this->license->where('code',$license)->select('created_at','active_time')->first();
         if($timeCreated==null) return false;
         else{
-            $timeCode=strtotime($timeCreated->created_at. ' +'.$timeCreated->active_time.'days');
+            $timeCode=strtotime($timeCreated->created_at. ' + '.$timeCreated->active_time.'days');
             $check=$timeCode-strtotime(Carbon::now());
             //return $check;
             if($check>=0) return true;//chua het han
