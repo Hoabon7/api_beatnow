@@ -57,4 +57,12 @@ class User extends Authenticatable
             case self::APPLE: return "apple";
         }
     }
+
+    public function playlist(){
+        return $this->hasMany('App\Models\Playlist','user_id','id');
+    }
+
+    public function license(){
+        return $this->hasMany('App\Models\License','user_id','id');
+    }
 }

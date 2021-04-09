@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\LicenseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\PlaylistController;
+use App\Http\Controllers\Api\SongController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +23,28 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => 'mobile'],function(){
     Route::post('login',[LoginController::class,'checkLogin']);
+
+    Route::group(['middleware'=>['auth:api']],function(){
+        //playlist
+        Route::group(['prefix'=>'playlists','as'=>'playlists.'],function(){
+            Route::get('/',[PlaylistController::class,'getAllPlayList'])->name('getall');//xong
+            Route::post('/create',[PlaylistController::class,'createPlayList'])->name('create');//xong
+            Route::get('/{id}',[PlaylistController::class,'getInfoPlayList'])->name('info');//xong
+            Route::post('/{id}/edit',[PlaylistController::class,'editPlayList'])->name('edit');//xong
+            Route::delete('/{id}/delete',[PlaylistController::class,'deletePlayList'])->name('delete');//xong
+            Route::get('/{id}/songs',[PlaylistController::class,'getAllSong'])->name('getAll');//xong
+            Route::post('/{id}/songs/create',[PlaylistController::class,'createSong'])->name('create_song');
+        });
+        //song
+        Route::group(['prefix'=>'songs','as'=>'songs.'],function(){
+            Route::delete('/{id}/delete',[SongController::class,'deleteSong'])->name('delete');//xong
+        });
+
+        Route::post('license/create',[LicenseController::class,'createCodeLicense'])->name('createcode');
+        Route::post('license/check',[LicenseController::class,'checkLicense'])->name('checklicense');
+        //Route::get('license/check',[LicenseController::class,'checkLicense'])->name('checklicense');
+    });
+    
 });
 
 

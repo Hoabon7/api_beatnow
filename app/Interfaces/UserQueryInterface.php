@@ -1,7 +1,7 @@
 <?php
 namespace App\Interfaces;
 
-interface EloquentQueryInterface{
+interface UserQueryInterface{
 
     public function insertUserGoogle( $data);
 
@@ -11,6 +11,6 @@ interface EloquentQueryInterface{
 
     public function getUser($id);
 
-
+    
 }
 

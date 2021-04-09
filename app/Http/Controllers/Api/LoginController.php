@@ -120,6 +120,9 @@ class LoginController extends Controller
         return $this->userService->createUserToken($user);
         
    }
+   /**
+    * login with apple
+    */
 
    public function loginWithApple($dataUser){
         //return $dataUser['email'];

@@ -3,10 +3,10 @@
 namespace App\Repository;
 
 use App\Models\User;
-use App\Interfaces\EloquentQueryInterface;
+use App\Interfaces\UserQueryInterface;
 
 
-class UserBaseRepository implements EloquentQueryInterface{
+class UserBaseRepository implements UserQueryInterface{
 
     public function insertUserFacebook($dataUser){
         $user=new User;
@@ -40,4 +40,5 @@ class UserBaseRepository implements EloquentQueryInterface{
     public function getUser($id){
 
     }
+   
 }
