@@ -63,7 +63,7 @@ class LoginController extends Controller
     {
         return Socialite::driver('facebook')->redirect();
     }
-
+    
     // Facebook callback
     public function handleFacebookCallback()
     {

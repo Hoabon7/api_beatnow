@@ -6,6 +6,7 @@ use App\Models\User;
 
 
 class NormalUserService {
+
     public function createUserToken($dataUser){
         //return $dataUser;
         $tokenResult = $dataUser->createToken('Personal Access Token');
@@ -26,6 +27,6 @@ class NormalUserService {
    public function checkProvider($provider){
         if($provider==User::FACEBOOK||$provider==User::APPLE||$provider==User::GOOGLE) return true;
         else return false;
-            
+
    }
 }
