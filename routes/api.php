@@ -28,7 +28,7 @@ Route::group(['prefix' => 'mobile'],function(){
         //playlist
         Route::group(['prefix'=>'playlists','as'=>'playlists.'],function(){
             Route::get('/',[PlaylistController::class,'getAllPlayList'])->name('getall');//xong
-            Route::post('/create',[PlaylistController::class,'createPlayList'])->name('create');//xong
+            Route::post('/update',[PlaylistController::class,'createPlayList'])->name('create');//xong
             Route::get('/{id}',[PlaylistController::class,'getInfoPlayList'])->name('info');//xong
             Route::post('/{id}/edit',[PlaylistController::class,'editPlayList'])->name('edit');//xong
             Route::delete('/{id}/delete',[PlaylistController::class,'deletePlayList'])->name('delete');//xong

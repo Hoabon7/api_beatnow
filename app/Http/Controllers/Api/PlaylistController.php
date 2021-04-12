@@ -30,12 +30,15 @@ class PlaylistController extends Controller
         $idUser=Auth::user()->id;
         $playlistId=$request->playlist_id;
         $checkPlayListExit=$this->playlist->where('playlist_id',$playlistId)->get()->count();
-        if($checkPlayListExit==0){
+        if($checkPlayListExit==0){//k ton tai
             $checkCreatePlayList= $this->playListRepository->add($idUser,$request->all());
             if($checkCreatePlayList==null) return $this->responseFail('can not create playlist!');
             else return $this->responseSuccess($checkCreatePlayList);
-        }elseif($checkPlayListExit>0){
-            return $this->responseFail('can not create playlist!');
+        }elseif($checkPlayListExit==1){//ton tai
+            $idPlayList=$checkPlayListExit=$this->playlist->where('playlist_id',$playlistId)->first()->id;
+            $dataPlayList=$this->playListRepository->store($idPlayList,$request->all());
+            if($dataPlayList==false) return $this->responseFail("can not update");
+            return $this->responseSuccess($dataPlayList);
         }
         
         
@@ -48,7 +51,7 @@ class PlaylistController extends Controller
 
     public function editPlayList($idPlayList,EditPlayListRequest $request){
         $dataPlayList=$this->playListRepository->store($idPlayList,$request->all());
-        if($dataPlayList==false) return $this->responseFail("can not edit");
+        if($dataPlayList==false) return $this->responseFail("can not update");
         return $this->responseSuccess($dataPlayList);
     }
 
