@@ -14,7 +14,7 @@ class AddColumnListsongsToTablePlaylist extends Migration
     public function up()
     {
         Schema::table('playlists', function (Blueprint $table) {
-            $table->text('listsongs')->nullable();
+            $table->longText('listsongs')->nullable();
         });
     }
 
