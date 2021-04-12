@@ -73,7 +73,7 @@ class PlayListRepository implements BasePlayListInterface{
     }
 
     public function getAllPlayList($idUser){
-        return User::where('id',$idUser)->with('playlist')->first();
+        return $this->user::where('id',$idUser)->with('playlist')->first();
     }
 
     public function createSong($idPlayList,$dataSong){
