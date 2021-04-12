@@ -27,13 +27,14 @@ Route::group(['prefix' => 'mobile'],function(){
     Route::group(['middleware'=>['auth:api']],function(){
         //playlist
         Route::group(['prefix'=>'playlists','as'=>'playlists.'],function(){
-            Route::get('/',[PlaylistController::class,'getAllPlayList'])->name('getall');//xong
+            Route::post('/',[PlaylistController::class,'getAllPlayList'])->name('getall');//xong
             Route::post('/update',[PlaylistController::class,'createPlayList'])->name('create');//xong
-            Route::get('/{id}',[PlaylistController::class,'getInfoPlayList'])->name('info');//xong
-            Route::post('/{id}/edit',[PlaylistController::class,'editPlayList'])->name('edit');//xong
             Route::delete('/{id}/delete',[PlaylistController::class,'deletePlayList'])->name('delete');//xong
-            Route::get('/{id}/songs',[PlaylistController::class,'getAllSong'])->name('getAll');//xong
-            Route::post('/{id}/songs/create',[PlaylistController::class,'createSong'])->name('create_song');
+            //Route::get('/{id}',[PlaylistController::class,'getInfoPlayList'])->name('info');//xong
+            //Route::post('/{id}/edit',[PlaylistController::class,'editPlayList'])->name('edit');//xong
+           
+            // Route::get('/{id}/songs',[PlaylistController::class,'getAllSong'])->name('getAll');//xong
+            // Route::post('/{id}/songs/create',[PlaylistController::class,'createSong'])->name('create_song');
         });
         //song
         Route::group(['prefix'=>'songs','as'=>'songs.'],function(){
