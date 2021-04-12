@@ -54,8 +54,8 @@ class LoginController extends Controller
         $token=$request->token;
         $provider=$request->provider;
         if($this->userService->checkProvider($provider)){
-            if($provider==User::FACEBOOK) $url="https://graph.facebook.com/v6.0/me?fields=id,name,email,first_name,middle_name,last_name,birthday,gender,picture&access_token=$token";
-            if($provider==User::GOOGLE) $url="https://www.googleapis.com/oauth2/v3/userinfo?access_token=$token";
+            if($provider==User::FACEBOOK) $url=config('global.URL_FACEBOOK').$token;
+            if($provider==User::GOOGLE) $url=config('global.URL_GOOGLE').$token;
             if($provider==User::APPLE) return $this->checkLoginApple($token,$provider);
             $checkToken=true;
             try {
@@ -76,7 +76,6 @@ class LoginController extends Controller
      * login
      */
     public function login($dataUser,$provider){
-       
         try {
             if(User::GOOGLE==$provider){
                 $user=$this->loginWithGoogle($dataUser);

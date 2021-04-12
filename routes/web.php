@@ -23,11 +23,12 @@ use App\Http\Controllers\Auth\LoginController;
  Route::get('test_date',function(){
 
        // echo strtotime(Carbon::now())."<br>";
-
-        $datatest_reserve=1637340179;
-        //1624983557
-        //1631895557
-        echo date('Y-m-d H:i:s',$datatest_reserve);
+//        $token="12fdjfdkfdjfd";
+//        echo config('global.URL_FACEBOOK').$token;
+        // $datatest_reserve=1637340179;
+        // //1624983557
+        // //1631895557
+        // echo date('Y-m-d H:i:s',$datatest_reserve);
 
         //echo Carbon::now();
         //$date = "2020-11-17 18:47:00";

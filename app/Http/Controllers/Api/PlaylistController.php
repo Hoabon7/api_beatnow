@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Playlist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreatePlayListRequest;
-use App\Http\Requests\EditPlayListRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Repository\PlayListRepository;
+use App\Http\Requests\EditPlayListRequest;
+use App\Http\Requests\CreatePlayListRequest;
 
 class PlaylistController extends Controller
 {
     protected $playListRepository;
+    protected $playlist;
 
-    public function __construct(PlayListRepository $playListRepository)
+    public function __construct(PlayListRepository $playListRepository,Playlist $playlist)
     {
         $this->playListRepository=$playListRepository;
+        $this->playlist=$playlist;
     }
 
     public function getAllPlayList(){
@@ -25,9 +28,16 @@ class PlaylistController extends Controller
 
     public function createPlayList(CreatePlayListRequest $request){
         $idUser=Auth::user()->id;
-        $checkCreatePlayList= $this->playListRepository->add($idUser,$request->all());
-        if($checkCreatePlayList==null) return $this->responseFail('can not create playlist!');
-        else return $this->responseSuccess($checkCreatePlayList);
+        $playlistId=$request->playlist_id;
+        $checkPlayListExit=$this->playlist->where('playlist_id',$playlistId)->get()->count();
+        if($checkPlayListExit==0){
+            $checkCreatePlayList= $this->playListRepository->add($idUser,$request->all());
+            if($checkCreatePlayList==null) return $this->responseFail('can not create playlist!');
+            else return $this->responseSuccess($checkCreatePlayList);
+        }elseif($checkPlayListExit>0){
+            return $this->responseFail('can not create playlist!');
+        }
+        
         
     }
 

@@ -30,5 +30,7 @@ return [
           }
         ]
       }',
+      'URL_FACEBOOK'=>'https://graph.facebook.com/v6.0/me?fields=id,name,email,first_name,middle_name,last_name,birthday,gender,picture&access_token=',
+      'URL_GOOGLE'  =>'https://www.googleapis.com/oauth2/v3/userinfo?access_token='
        
     ];

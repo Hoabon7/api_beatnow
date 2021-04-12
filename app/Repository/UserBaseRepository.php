@@ -8,6 +8,11 @@ use App\Interfaces\UserQueryInterface;
 
 class UserBaseRepository implements UserQueryInterface{
 
+    /**
+     * insert info user to db
+     * @param dataUser get from token
+     * return user
+     */
     public function insertUserFacebook($dataUser){
         $user=new User;
             $user->name=$dataUser->name;
@@ -26,6 +31,7 @@ class UserBaseRepository implements UserQueryInterface{
             }
        return $user;
     }
+   
 
     public function insertUserGoogle($dataUser){
         $user=new User;

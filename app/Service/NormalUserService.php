@@ -20,6 +20,9 @@ class NormalUserService {
             )->toDateTimeString()
         ]);
    }
+   /**
+    * check provider in arrange allow:google,face,apple
+    */
    public function checkProvider($provider){
         if($provider==User::FACEBOOK||$provider==User::APPLE||$provider==User::GOOGLE) return true;
         else return false;

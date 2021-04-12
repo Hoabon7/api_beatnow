@@ -9,7 +9,7 @@ class Playlist extends Model
 {
     use HasFactory;
 
-    protected $fillable=['name','thumbnail','song_number','user_id'];
+    protected $fillable=['name','thumbnail','song_number','user_id','listsongs','playlist_id'];
 
     public function user(){
         return $this->belongsTo('App\Models\User','user_id','id');

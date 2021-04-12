@@ -17,6 +17,10 @@ class PlayListRepository implements BasePlayListInterface{
         $this->playlist=$playlist;   
         $this->user=$user;
     }
+    /**
+     * add playlist to user specifile
+     * @param data ;//data of playlist 
+     */
     public function add($idUser,array $data){
         $user=$this->user->where('id',$idUser)->first();
         if($user==null) return false;
@@ -26,11 +30,22 @@ class PlayListRepository implements BasePlayListInterface{
         }
         
     }
-
+    /**
+     * check playlist exit
+     * return playlist
+     * @param $idPlaylist
+     */
     public function edit(int $idPlayList){
         $dataPlayList=$this->playlist->findOrFail($idPlayList);
         return $dataPlayList;
     }
+    /**
+     * update info playlist
+     * @param $idPlaylist
+     * @param data of playlist from app send
+     * 
+     * return dataPlaylist updated
+     */
 
     public function store($idPlayList,array $data){
         $dataPlayList=$this->playlist->where('id',$idPlayList)->first();
@@ -48,6 +63,9 @@ class PlayListRepository implements BasePlayListInterface{
         }
         return $this->playlist->destroy($idPlayList);
     }
+    /**
+     * get all song from playlist
+     */
 
     public function getAllSong($idPlayList){
         return $this->playlist->where('id',$idPlayList)->with('song')->get();
