@@ -34,7 +34,7 @@ class PlaylistController extends Controller
             $checkCreatePlayList= $this->playListRepository->add($idUser,$request->all());
             if($checkCreatePlayList==null) return $this->responseFail('can not create playlist!');
             else return $this->responseSuccess($checkCreatePlayList);
-        }elseif($checkPlayListExit==1){//ton tai
+        }elseif($checkPlayListExit==1){//ton tai =>update
             $idPlayList=$checkPlayListExit=$this->playlist->where('playlist_id',$playlistId)->first()->id;
             $dataPlayList=$this->playListRepository->store($idPlayList,$request->all());
             if($dataPlayList==false) return $this->responseFail("can not update");
@@ -55,8 +55,10 @@ class PlaylistController extends Controller
         return $this->responseSuccess($dataPlayList);
     }
 
-    public function deletePlayList(int $idPlayList){
+    public function deletePlayList(string $idPlayList){
+        //return $idPlayList;
         $checkCancel=$this->playListRepository->delete($idPlayList);
+       // return $checkCancel;
         if($checkCancel==false){
             return $this->responseBadRequest('can not delete!');
         }

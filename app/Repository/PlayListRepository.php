@@ -56,12 +56,13 @@ class PlayListRepository implements BasePlayListInterface{
         //$this->playlist->update($data);
     }
 
-    public function delete(int $idPlayList){
-        $checkCancel=$this->playlist->where('id',$idPlayList)->first();
+    public function delete(string $idPlayList){
+        $checkCancel=$this->playlist->where('playlist_id',$idPlayList)->first();
+        //return $checkCancel;
         if($checkCancel==null){
             return false;
         }
-        return $this->playlist->destroy($idPlayList);
+        return $this->playlist->destroy($checkCancel->id);
     }
     /**
      * get all song from playlist

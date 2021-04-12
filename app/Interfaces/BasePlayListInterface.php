@@ -6,7 +6,7 @@ interface BasePlayListInterface{
 
     public function edit(int $idPlayList);
 
-    public function delete(int $idPlayList);
+    public function delete(string $idPlayList);
 
     public function getAllSong(int $idPlayList);
 
