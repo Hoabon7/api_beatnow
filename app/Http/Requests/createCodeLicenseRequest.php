@@ -24,7 +24,7 @@ class createCodeLicenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'day'=>'required'
+            'code'=>'required'
         ];
     }
 }

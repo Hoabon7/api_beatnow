@@ -18,7 +18,7 @@ class Controller extends BaseController
         ],$httpCode);
     }
 
-    public function responseSuccess( $data = null) {
+    public function responseSuccess( $data) {
         return $this->response(200, true, 'success', $data );
     }
 

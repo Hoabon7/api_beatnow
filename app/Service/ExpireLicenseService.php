@@ -5,14 +5,7 @@ use Carbon\Carbon;
 use App\Models\License;
 
 class ExpireLicenseService{
-    public function convertFromDateToInt($date){
-        return strtotime($date);
-    }
-
-    public function convertFromIntToDate($date){
-        return date('Y-m-d H:i:s', $date);
-    }
-
+   
     public function createLicenseCode(){
         $characters = '123456789ABCDEFGHIJKLMNPQRSTVWXYZ';
         $charactersLength = strlen($characters);

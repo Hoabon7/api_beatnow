@@ -38,57 +38,33 @@ class LicenseController extends Controller
     }
 
     public function createCodeLicense(createCodeLicenseRequest $request){
-        $idUser=Auth::user()->id;
-        $date=$request->day;
-        $checkCreateCode=false;
-        do{
-            try {
-                //generate code;
-                $codeLicense=$this->expireLicenseService->createLicenseCode();
-                $dataCodeLicense=$this->licenseCodeRepository->createLicense($idUser,$date,$codeLicense);
-                $checkCreateCode=false;
-                return $dataCodeLicense->code;
-               
-            } catch (\Throwable $th) {
-                Log::debug($th->getMessage());
-                $checkCreateCode=true;
-            }
-        }while($checkCreateCode==true);
+       $checkCreate= $this->licenseCodeRepository->createLicense($request->code);
+       if($checkCreate==true) return $this->responseSuccess($checkCreate);
+       else return $this->responseFail('code exited');
     }
 
     public function checkLicense(checkLicenseRequest $request){
         $license=$request->license;
+        //return $license;
         $idUser=Auth::user()->id;
-
-        $checkCodeIsset= $this->licenseCodeRepository->checkLicenseIsset($idUser,$license);
-        if($checkCodeIsset==false) return $this->responseFail('license out date');
-        else{
-            $checkCodeExpire= $this->licenseCodeRepository->checkCodeExpire($license);
-            $activeTime= $this->license->where('code',$license)->first()->active_time;
-            //return $activeTime;
-            $checkUserExpire=$this->expireLicenseService->checkExpireLicense(Auth::user()->expire_time);
-            if($checkCodeExpire==true) {
-                //code chua het han==> check user xem het han su dung hay chua
-                $getUserExpire=$this->licenseCodeRepository->getUserExpire($idUser);
-                if($checkUserExpire==License::UNACTIVE||$checkUserExpire==License::EXPIRE){
-                    $this->user->where('id',$idUser)->update([
-                        'expire_time'=>strtotime(Carbon::now() . '+ '.$activeTime.'days')
-                    ]);
-                }else{
-                    $dateExpireUser=$this->expireLicenseService->convertFromIntToDate($getUserExpire);
-                    //return $dateExpireUser;
-                    $dataUser=$this->user->where('id',$idUser)->update([
-                        //check
-                        'expire_time'=>strtotime($dateExpireUser. '+ '.$activeTime.'days')
-                    ]);
-                    return $this->responseSuccess($dataUser);
-                }
-                
-            }else{
-                //code het han
-                return $this->responseFail('license out date');
+        try {
+            $checkLicense=$this->license->where('code',$license)->first()->count();
+            if($checkLicense==1){
+                //active cho user vinh vien
+                $this->user->where('id',$idUser)->update([
+                    'expire_time'=>1
+                ]);
+                return $this->responseSuccess(null);
             }
+           
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
+        
+    }
+
+    public function getCodeLicense(){
+        return $this->license->first()->code;
     }
 
 }

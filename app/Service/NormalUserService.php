@@ -6,7 +6,7 @@ use App\Models\User;
 
 
 class NormalUserService {
-    
+        
     public function createUserToken($dataUser){
         //return $dataUser;
         $tokenResult = $dataUser->createToken('Personal Access Token');

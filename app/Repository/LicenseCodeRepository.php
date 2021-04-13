@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\License;
 use App\Interfaces\LicenseCodeInterface;
 
-class LicenseCodeRepository implements LicenseCodeInterface{
+class LicenseCodeRepository{
     /**
      * gender ra code_license
      */
@@ -27,16 +27,23 @@ class LicenseCodeRepository implements LicenseCodeInterface{
      * return null or dataLicense
      */
 
-    public function createLicense($idUser,$date,$codeLicense){
-        $dataUser=$this->user->where('id',$idUser)->first();
-
-        $dataLicense=$dataUser->license()->save(new License([
-            'active_time'=>$date,
-            'code'=> $codeLicense
-        ]));
-
-        if($dataLicense==null) return false;
-        return $dataLicense;
+    public function createLicense($codeLicense){
+        $check=$this->license->where('code',$codeLicense)->first();
+        $license=$this->license->where('id','>',0)->first();
+        if($check==null){
+            //neu mã nhập vào khác mã trong db thì update
+            $this->license->where('id',$license->id)->update([
+                'code'=>$codeLicense
+            ]);
+            return true;
+        }else{
+            return false;//da co thi thôi
+        }
+        
+            
+          
+        // if($dataLicense==null) return false;
+        // return $dataLicense;
     }
     /**
      * check code license in table license exit
@@ -45,11 +52,7 @@ class LicenseCodeRepository implements LicenseCodeInterface{
      * return boolen
      */
     
-    public function checkCodeSame($code){
-        $check=$this->license::where('code',$code)->first();
-        if($check==null) return false;
-        return true;
-    }
+   
     /**
      * check time_expire of user expire or still in version pro
      * @param idUser
@@ -73,23 +76,7 @@ class LicenseCodeRepository implements LicenseCodeInterface{
         if($license==null) return false;
         return $license;
     }
-    /**
-     * check code expire
-     * @param code_license
-     * 
-     * return true or false
-     */
+   
 
-    public function checkCodeExpire($license){
-        $timeCreated=$this->license->where('code',$license)->select('created_at','active_time')->first();
-        if($timeCreated==null) return false;
-        else{
-            $timeCode=strtotime($timeCreated->created_at. ' + '.$timeCreated->active_time.'days');
-            $check=$timeCode-strtotime(Carbon::now());
-            //return $check;
-            if($check>=0) return true;//chua het han
-            else return false;//het han
-        }
-    }
 
 }
