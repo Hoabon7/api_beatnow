@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Log_user extends Model
 {
     use HasFactory;
+    protected $fillable=['user_id','code','time_active'];
 }

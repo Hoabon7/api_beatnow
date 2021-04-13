@@ -49,18 +49,21 @@ class LicenseController extends Controller
         $idUser=Auth::user()->id;
         try {
             $checkLicense=$this->license->where('code',$license)->first()->count();
+
             if($checkLicense==1){
                 //active cho user vinh vien
                 $this->user->where('id',$idUser)->update([
                     'active'=>1
                 ]);
                 $timeActive=$this->expireLicenseService->convertTimeToInteger(Carbon::now());
+                //return $timeActive;
                 $this->licenseCodeRepository->logActive($idUser,$timeActive,$license);
                 return $this->responseSuccess(null);
             }
            
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
+            return $th->getMessage();
             return $this->responseFail('License not true');
         }
         

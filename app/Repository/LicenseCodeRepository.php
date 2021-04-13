@@ -62,7 +62,7 @@ class LicenseCodeRepository{
             'time_active'=>$time
         ]);
 
-        return $data;
+       // return $data;
     }
   
     
