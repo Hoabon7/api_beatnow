@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnExpireTimeToTableUser extends Migration
+class CreateLogUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddColumnExpireTimeToTableUser extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('active')->default(0);
+        Schema::create('log_users', function (Blueprint $table) {
+            $table->id();
+            $table->integer('user_id');
+            $table->string('code');
+            $table->integer('time_active');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +29,6 @@ class AddColumnExpireTimeToTableUser extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('log_users');
     }
 }

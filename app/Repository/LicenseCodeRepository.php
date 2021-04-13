@@ -5,6 +5,7 @@ namespace App\Repository;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\License;
+use App\Models\Log_user;
 use Illuminate\Support\Facades\Log;
 use App\Interfaces\LicenseCodeInterface;
 
@@ -14,11 +15,13 @@ class LicenseCodeRepository{
      */
     protected $license;
     protected $user;
+    protected $logUser;
 
-    public function __construct(License $license,User $user)
+    public function __construct(License $license,User $user,Log_user $logUser)
     {
         $this->license=$license;
         $this->user=$user;
+        $this->logUser=$logUser;
     }
     /**
      * create license
@@ -46,49 +49,27 @@ class LicenseCodeRepository{
             }
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
-            $this->license->create([
-                'code'=>$codeLicense
-            ]);
+            $this->license->create(['code'=>$codeLicense]);
             return true;
         }
-       
-        
-            
-          
-        // if($dataLicense==null) return false;
-        // return $dataLicense;
     }
-    /**
-     * check code license in table license exit
-     * @param code
-     * 
-     * return boolen
-     */
+
+    public function logActive($idUser,$time,$code){
+
+        $data=$this->logUser->create([
+            'user_id'=>$idUser,
+            'code'=>$code,
+            'time_active'=>$time
+        ]);
+
+        return $data;
+    }
+  
     
    
-    /**
-     * check time_expire of user expire or still in version pro
-     * @param idUser
-     * return expire_time
-     */
+    
 
-    public function getUserExpire($idUser){
-        return $this->user->where('id',$idUser)->select('expire_time')->get()[0]->expire_time;
-    }
-    /**
-     * check license exit by check code license
-     * @param idUser
-     * @param code_license
-     * return false or return user has license
-     */
-    public function checkLicenseIsset($idUser,$license){
-        $license=$this->user->where('id',$idUser)->whereHas('license',function($query) use($license){
-            $query->where('code',$license);
-        })->first();
-
-        if($license==null) return false;
-        return $license;
-    }
+    
    
 
 

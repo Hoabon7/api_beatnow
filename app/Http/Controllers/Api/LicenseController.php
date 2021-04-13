@@ -52,19 +52,24 @@ class LicenseController extends Controller
             if($checkLicense==1){
                 //active cho user vinh vien
                 $this->user->where('id',$idUser)->update([
-                    'expire_time'=>1
+                    'active'=>1
                 ]);
+                $timeActive=$this->expireLicenseService->convertTimeToInteger(Carbon::now());
+                $this->licenseCodeRepository->logActive($idUser,$timeActive,$license);
                 return $this->responseSuccess(null);
             }
            
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            Log::debug($th->getMessage());
+            return $this->responseFail('License not true');
         }
         
     }
 
     public function getCodeLicense(){
-        return $this->license->first()->code;
+        if($this->license->first()!=null)
+            return $this->license->first()->code;
+        return $this->responseFail("License empty");
     }
 
 }
