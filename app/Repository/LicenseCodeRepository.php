@@ -5,6 +5,7 @@ namespace App\Repository;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\License;
+use Illuminate\Support\Facades\Log;
 use App\Interfaces\LicenseCodeInterface;
 
 class LicenseCodeRepository{
@@ -26,19 +27,31 @@ class LicenseCodeRepository{
      * @param code_license
      * return null or dataLicense
      */
-
+    
     public function createLicense($codeLicense){
         $check=$this->license->where('code',$codeLicense)->first();
+        //$count
+        
         $license=$this->license->where('id','>',0)->first();
-        if($check==null){
-            //neu mã nhập vào khác mã trong db thì update
-            $this->license->where('id',$license->id)->update([
+        try {
+            $count=$this->license->where('id','>',0)->first()->count();
+            if($check==null){
+                //neu mã nhập vào khác mã trong db thì update
+                $this->license->where('id',$license->id)->update([
+                    'code'=>$codeLicense
+                ]);
+                return true;
+            }else{
+                return false;//da co thi thôi
+            }
+        } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
+            $this->license->create([
                 'code'=>$codeLicense
             ]);
             return true;
-        }else{
-            return false;//da co thi thôi
         }
+       
         
             
           
