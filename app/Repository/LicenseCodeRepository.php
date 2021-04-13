@@ -55,14 +55,28 @@ class LicenseCodeRepository{
     }
 
     public function logActive($idUser,$time,$code){
-
         $data=$this->logUser->create([
             'user_id'=>$idUser,
             'code'=>$code,
             'time_active'=>$time
         ]);
+        return $data;
+    }
 
-       // return $data;
+    public function checkUserActive($idUser){
+        try {
+            $checUserActive=$this->user->where([
+                'id'=>$idUser,
+                'active'=>user::ACTIVE
+            ])->first()->count();
+            if($checUserActive==user::ACTIVE) return user::ACTIVE;
+        } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
+            return user::UNACTIVE;
+        }
+        
+
+
     }
   
     

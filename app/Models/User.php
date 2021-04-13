@@ -17,6 +17,9 @@ class User extends Authenticatable
     public const FACEBOOK=1;
     public const APPLE=2;
 
+    public const ACTIVE=1;
+    public const UNACTIVE=0;
+
    
 
     /**

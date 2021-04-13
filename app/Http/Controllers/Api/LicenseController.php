@@ -50,15 +50,16 @@ class LicenseController extends Controller
         try {
             $checkLicense=$this->license->where('code',$license)->first()->count();
 
-            if($checkLicense==1){
+            if($checkLicense==user::ACTIVE){
                 //active cho user vinh vien
                 $this->user->where('id',$idUser)->update([
-                    'active'=>1
+                    'active'=>user::ACTIVE
                 ]);
                 $timeActive=$this->expireLicenseService->convertTimeToInteger(Carbon::now());
                 //return $timeActive;
-                $this->licenseCodeRepository->logActive($idUser,$timeActive,$license);
-                return $this->responseSuccess(null);
+                $dataLogActive=$this->licenseCodeRepository->logActive($idUser,$timeActive,$license);
+                //return $dataLogActive;
+                return $this->responseSuccess($dataLogActive);
             }
            
         } catch (\Throwable $th) {
@@ -73,6 +74,19 @@ class LicenseController extends Controller
         if($this->license->first()!=null)
             return $this->license->first()->code;
         return $this->responseFail("License empty");
+    }
+
+    public function checkUserActive(){
+        $idUser=Auth::user()->id;
+
+        if($this->licenseCodeRepository->checkUserActive($idUser)==user::ACTIVE) return response()->json([
+            'success'=>'user actived!',
+            'idUser'=>$idUser
+        ],200);
+        else return response()->json([
+            'success'=>'user actived!',
+            'idUser'=>$idUser
+        ],200);
     }
 
 }
