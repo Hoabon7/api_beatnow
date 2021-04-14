@@ -5,7 +5,7 @@ use Carbon\Carbon;
 use App\Models\User;
 
 
-class NormalUserService {
+class NormalUserService extends ExpireLicenseService{
         
     public function createUserToken($dataUser){
         //return $dataUser;
@@ -16,9 +16,9 @@ class NormalUserService {
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'user_info'=>$dataUser,
-            'expires_at' => Carbon::parse(
+            'expires_at' =>$this->convertTimeToInteger(Carbon::parse(
                 $tokenResult->token->expires_at
-            )->toDateTimeString()
+            )->toDateTimeString())
         ]);
    }
    /**
