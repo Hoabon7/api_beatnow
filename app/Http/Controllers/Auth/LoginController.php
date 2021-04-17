@@ -70,7 +70,7 @@ class LoginController extends Controller
         $user = Socialite::driver('facebook')->user();
         $provider="facebook";
         $this->registerOrLoginUser($user,$provider);
-        return $user->token;
+        //return $user->token;
         // Return home after login
         return redirect()->route('home');
     }

@@ -77,16 +77,20 @@ class LicenseController extends Controller
     }
 
     public function checkUserActive(){
-        $idUser=Auth::user()->id;
-
-        if($this->licenseCodeRepository->checkUserActive($idUser)==user::ACTIVE) return response()->json([
-            'success'=>'user actived!',
-            'idUser'=>$idUser
-        ],200);
-        else return response()->json([
-            'false'=>'user unactived!',
-            'idUser'=>$idUser
-        ],200);
+         $idUser=Auth::user()->id;
+         $user=Auth::user();
+        if($user->active==user::ACTIVE) {
+            return response()->json([
+                'success'=>'user actived!',
+                'idUser'=>$idUser
+            ],200);
+        }
+        else {
+            return response()->json([
+                'false'=>'user unactived!',
+                'idUser'=>$idUser
+            ],200);
+        }
     }
 
 }

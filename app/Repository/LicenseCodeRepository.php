@@ -63,13 +63,11 @@ class LicenseCodeRepository{
         return $data;
     }
 
-    public function checkUserActive($idUser){
+    public function checkUserActive($user){
+        //return $user;//->active;
         try {
-            $checUserActive=$this->user->where([
-                'id'=>$idUser,
-                'active'=>user::ACTIVE
-            ])->first()->count();
-            if($checUserActive==user::ACTIVE) return user::ACTIVE;
+            if($user->active=user::ACTIVE) return user::ACTIVE;
+            else return user::UNACTIVE;
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
             return user::UNACTIVE;
