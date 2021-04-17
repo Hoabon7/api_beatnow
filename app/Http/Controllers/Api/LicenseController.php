@@ -81,13 +81,13 @@ class LicenseController extends Controller
          $user=Auth::user();
         if($user->active==user::ACTIVE) {
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'idUser'=>$idUser
             ],200);
         }
         else {
             return response()->json([
-                'success'=>'false',
+                'success'=>false,
                 'idUser'=>$idUser
             ],200);
         }
