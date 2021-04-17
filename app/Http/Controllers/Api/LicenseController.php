@@ -84,7 +84,7 @@ class LicenseController extends Controller
             'idUser'=>$idUser
         ],200);
         else return response()->json([
-            'success'=>'user actived!',
+            'false'=>'user unactived!',
             'idUser'=>$idUser
         ],200);
     }
