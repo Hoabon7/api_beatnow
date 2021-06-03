@@ -43,15 +43,17 @@ class LicenseController extends Controller
     //    else return $this->responseFail('code exited');
     // }
 
+    public function isLicenseDisable($license){
+        return $this->license->where('code', $license)->first()->status;
+    }
+
     public function checkLicense(checkLicenseRequest $request){
         $license = $request->license;
         //return $license;
         $idUser = Auth::user()->id;
         try {
-            $checkLicense = $this->license->where('code', $license)->first()->count();
-
-            if($checkLicense == user::ACTIVE){
-                //active cho user vinh vien
+           if($this->isLicenseDisable($license) != License::ACTIVE) return $this->responseFail('License Expire!');
+           else{
                 $this->user->where('id', $idUser)->update([
                     'active' => user::ACTIVE
                 ]);
@@ -60,7 +62,7 @@ class LicenseController extends Controller
                 $dataLogActive = $this->licenseCodeRepository->logActive($idUser, $timeActive, $license);
                 //return $dataLogActive;
                 return $this->responseSuccess($dataLogActive);
-            }
+           }
            
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
