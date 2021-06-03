@@ -24,5 +24,16 @@ class customer extends Seeder
             'role' => User::ADMIN
 
         ]);
+
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin@beatnow.com',
+            'password' => bcrypt('.&~6#3@cyQSk]AfK'),
+            'provider' => User::GOOGLE,
+            'provider_id' => '11111111',
+            'active' => User::ACTIVE,
+            'role' => User::ADMIN
+
+        ]);
     }
 }
