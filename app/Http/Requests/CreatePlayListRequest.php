@@ -24,7 +24,7 @@ class CreatePlayListRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required'
+            'name' => 'required'
         ];
     }
 }

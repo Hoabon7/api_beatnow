@@ -24,7 +24,7 @@ class checkLicenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'license'=>'required'
+            'license' => 'required'
         ];
     }
 }

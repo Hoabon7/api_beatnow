@@ -13,14 +13,20 @@ class User extends Authenticatable
     
     use HasApiTokens,HasFactory, Notifiable;
 
-    public const GOOGLE=0;
-    public const FACEBOOK=1;
-    public const APPLE=2;
+    //type login
+    public const GOOGLE = 0;
+    public const FACEBOOK = 1;
+    public const APPLE = 2;
+    
+    
+    //status customer
+    public const ACTIVE = 1;
+    public const UNACTIVE = 0;
 
-    public const ACTIVE=1;
-    public const UNACTIVE=0;
+    //role customer,admin
 
-   
+    public const ADMIN = 1;
+    public const CUSTOMER = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +37,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar'
+        'avatar',
+        'role'
     ];
 
     /**

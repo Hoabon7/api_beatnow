@@ -13,9 +13,9 @@ class Controller extends BaseController
     public function response(int $httpCode, bool $success, string $message, $data) {
         return response()->json([
             'success' => $success,
-            'message'=>$message,
-            'data'=>$data,
-        ],$httpCode);
+            'message' => $message,
+            'data' => $data,
+        ], $httpCode);
     }
 
     public function responseSuccess( $data) {
@@ -29,7 +29,7 @@ class Controller extends BaseController
     public function responseBadRequest( string $message ) {
         return response()->json([
             'success' => false,
-            'message'=>$message,
-        ],400);
+            'message' => $message,
+        ], 400);
     }
 }

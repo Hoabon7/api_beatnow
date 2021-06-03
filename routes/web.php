@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminLoginController;
 use Carbon\Carbon;
 use App\Models\User;
 use Firebase\JWT\JWK;
@@ -7,6 +8,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Web\ManagingLicenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,30 +22,7 @@ use App\Http\Controllers\Auth\LoginController;
 */
 
 
- Route::get('test_date',function(){
 
-       // echo strtotime(Carbon::now())."<br>";
-//        $token="12fdjfdkfdjfd";
-//        echo config('global.URL_FACEBOOK').$token;
-        // $datatest_reserve=1649929450;
-        // //1624983557
-        // //1631895557
-        // echo date('Y-m-d H:i:s',$datatest_reserve);
-
-        //echo Carbon::now();
-        //$date = "2020-11-17 18:47:00";
-//     //echo date('Y-m-d H:i:s', strtotime($date. ' + 6 days'));
-        //echo strtotime($date);
-
-//     $characters = '123456789ABCDEFGHIJKLMNPQRSTVWXYZ';
-//     $charactersLength = strlen($characters);
-//     $randomString = '';
-//     for ($i = 0; $i < 6; $i++) {
-//         $randomString .= $characters[rand(0, $charactersLength - 1)];
-//     }
-//     $licenseCode=$randomString;
-//     return $licenseCode;
- });
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -54,3 +33,19 @@ Route::get('login/google/callback', [App\Http\Controllers\Auth\LoginController::
 // Facebook login
 Route::get('login/facebook', [App\Http\Controllers\Auth\LoginController::class, 'redirectToFacebook'])->name('login.facebook');
 Route::get('login/facebook/callback', [App\Http\Controllers\Auth\LoginController::class, 'handleFacebookCallback']);
+
+
+//admin login 
+Route::group(['prefix' => 'license', 'as' => 'license.', 'middleware' => ['is_admin']], function(){
+    Route::get('/all', [ManagingLicenseController::class,'all'])->name('all');
+    Route::get('/create', [ManagingLicenseController::class,'create'])->name('create');
+    Route::post('/store', [ManagingLicenseController::class,'store'])->name('store');
+    Route::get('/{id}/is_active/{status}', [ManagingLicenseController::class,'isActive'])->name('is_active');
+});
+
+
+Route::get('/login', [AdminLoginController::class, 'login'])->name('login');
+Route::post('/login', [AdminLoginController::class, 'checkLogin'])->name('login.check');
+Route::get('/logout', [AdminLoginController::class, 'logout'])->name('logout');
+
+

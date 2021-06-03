@@ -21,9 +21,9 @@ class License extends Model
 
     public function convertStatusLicense(int $status){ 
         switch ($status) {
-            case self::UNACTIVE: return "unactive";
-            case self::EXPIRE: return "expire";
-            case self::ACTIVE: return "active";
+            case self::UNACTIVE: return "Chưa kích hoạt";
+            case self::EXPIRE: return "Đã hết hạn";
+            case self::ACTIVE: return "Đã kích hoạt";
             default:return "____";  
         }
     }

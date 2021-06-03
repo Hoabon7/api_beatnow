@@ -13,13 +13,13 @@ class SongController extends Controller
     protected $songRepository;
     public function __construct(Song $song,SongRepository $songRepository)
     {
-        $this->song=$song;
-        $this->songRepository=$songRepository;
+        $this->song = $song;
+        $this->songRepository = $songRepository;
     }
 
     public function deleteSong($idSong){
-        $checkDeleteSong=$this->songRepository->delete($idSong);
-        if($checkDeleteSong==false) return $this->responseFail('Can not delete song!');
+        $checkDeleteSong = $this->songRepository->delete($idSong);
+        if($checkDeleteSong == false) return $this->responseFail('Can not delete song!');
         return $this->responseSuccess($checkDeleteSong);
     }
 }

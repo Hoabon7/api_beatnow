@@ -24,7 +24,7 @@ class createCodeLicenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'code'=>'required'
+            'code' => 'required|unique:licenses'
         ];
     }
 }

@@ -41,7 +41,7 @@ Route::group(['prefix' => 'mobile'],function(){
             Route::delete('/{id}/delete',[SongController::class,'deleteSong'])->name('delete');//xong
         });
 
-        Route::post('license/update',[LicenseController::class,'createCodeLicense'])->name('createcode');
+        //Route::post('license/update',[LicenseController::class,'createCodeLicense'])->name('createcode');
         Route::get('license/getcode',[LicenseController::class,'getCodeLicense'])->name('getcode');
         Route::post('license/active',[LicenseController::class,'checkLicense'])->name('checklicense');
         Route::get('license/check-active-user',[LicenseController::class,'checkUserActive']);

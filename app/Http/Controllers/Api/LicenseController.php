@@ -31,33 +31,33 @@ class LicenseController extends Controller
                                 License $license,
                                 User $user)
     {
-        $this->user=$user;
-        $this->license=$license;
-        $this->expireLicenseService=$expireLicenseService;
-        $this->licenseCodeRepository=$licenseCodeRepository;
+        $this->user = $user;
+        $this->license = $license;
+        $this->expireLicenseService = $expireLicenseService;
+        $this->licenseCodeRepository = $licenseCodeRepository;
     }
 
-    public function createCodeLicense(createCodeLicenseRequest $request){
-       $checkCreate= $this->licenseCodeRepository->createLicense($request->code);
-       if($checkCreate==true) return $this->responseSuccess($checkCreate);
-       else return $this->responseFail('code exited');
-    }
+    // public function createCodeLicense(createCodeLicenseRequest $request){
+    //    $checkCreate = $this->licenseCodeRepository->createLicense($request->code);
+    //    if($checkCreate == true) return $this->responseSuccess($checkCreate);
+    //    else return $this->responseFail('code exited');
+    // }
 
     public function checkLicense(checkLicenseRequest $request){
-        $license=$request->license;
+        $license = $request->license;
         //return $license;
-        $idUser=Auth::user()->id;
+        $idUser = Auth::user()->id;
         try {
-            $checkLicense=$this->license->where('code',$license)->first()->count();
+            $checkLicense = $this->license->where('code', $license)->first()->count();
 
-            if($checkLicense==user::ACTIVE){
+            if($checkLicense == user::ACTIVE){
                 //active cho user vinh vien
-                $this->user->where('id',$idUser)->update([
-                    'active'=>user::ACTIVE
+                $this->user->where('id', $idUser)->update([
+                    'active' => user::ACTIVE
                 ]);
-                $timeActive=$this->expireLicenseService->convertTimeToInteger(Carbon::now());
+                $timeActive = $this->expireLicenseService->convertTimeToInteger(Carbon::now());
                 //return $timeActive;
-                $dataLogActive=$this->licenseCodeRepository->logActive($idUser,$timeActive,$license);
+                $dataLogActive = $this->licenseCodeRepository->logActive($idUser, $timeActive, $license);
                 //return $dataLogActive;
                 return $this->responseSuccess($dataLogActive);
             }
@@ -69,27 +69,21 @@ class LicenseController extends Controller
         }
         
     }
-
+    //sua lai
     public function getCodeLicense(){
-        if($this->license->first()!=null)
+        if($this->license->first() != null)
             return $this->license->first()->code;
         return $this->responseFail("License empty");
     }
 
     public function checkUserActive(){
-         $idUser=Auth::user()->id;
-         $user=Auth::user();
-        if($user->active==user::ACTIVE) {
-            return response()->json([
-                'success'=>true,
-                'idUser'=>$idUser
-            ],200);
+         $idUser = Auth::user()->id;
+         $user = Auth::user();
+        if($user->active == user::ACTIVE) {
+            return $this->response(200, true, "success", $idUser);
         }
         else {
-            return response()->json([
-                'success'=>false,
-                'idUser'=>$idUser
-            ],200);
+            return $this->response(200, false, "false", $idUser);
         }
     }
 
