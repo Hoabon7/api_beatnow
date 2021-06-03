@@ -44,8 +44,8 @@ Route::group(['prefix' => 'license', 'as' => 'license.', 'middleware' => ['is_ad
 });
 
 
-Route::get('/login', [AdminLoginController::class, 'login'])->name('login');
-Route::post('/login', [AdminLoginController::class, 'checkLogin'])->name('login.check');
-Route::get('/logout', [AdminLoginController::class, 'logout'])->name('logout');
+// Route::get('/login', [AdminLoginController::class, 'login'])->name('login');
+// Route::post('/login', [AdminLoginController::class, 'checkLogin'])->name('login.check');
+// Route::get('/logout', [AdminLoginController::class, 'logout'])->name('logout');
 
 

@@ -46,10 +46,12 @@ Route::group(['prefix' => 'mobile'],function(){
         Route::post('license/active',[LicenseController::class,'checkLicense'])->name('checklicense');
         Route::get('license/check-active-user',[LicenseController::class,'checkUserActive']);
         
-        //Route::get('license/check',[LicenseController::class,'checkLicense'])->name('checklicense');
+       
     });
     
 });
+
+Route::get('get',[LicenseController::class,'getLicenseActive']);
 
 
 

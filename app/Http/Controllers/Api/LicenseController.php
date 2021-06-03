@@ -71,10 +71,16 @@ class LicenseController extends Controller
     }
     //sua lai
     public function getCodeLicense(){
-        if($this->license->first() != null)
-            return $this->license->first()->code;
-        return $this->responseFail("License empty");
+        if(Auth::user()->active !== User::ACTIVE) {
+            if($this->license->where('status',License::ACTIVE)->first() != null)
+                return $this->license->first()->code;
+            return $this->responseFail("License empty");
+        }else{
+            return $this->responseFail("User was active!");
+        }
+        
     }
+
 
     public function checkUserActive(){
          $idUser = Auth::user()->id;
