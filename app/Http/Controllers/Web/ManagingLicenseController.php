@@ -17,7 +17,7 @@ class ManagingLicenseController extends Controller
     }
     public function all(){
         $listLicense = $this->license->all();
-        return view('license')->with(['listLicense' => $listLicense]);
+        return view('License')->with(['listLicense' => $listLicense]);
     }
 
     public function isActive(Request $request){
