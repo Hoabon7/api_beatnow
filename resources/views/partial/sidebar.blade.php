@@ -43,7 +43,7 @@
                     <a href="#" class="nav-link"><i class="icon-list-ordered"></i>
                         <span>Thông tin license</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Themes" style="display: block;">
-                        <li class="nav-item"><a href="/license/all" class="nav-link">Danh sách License</a></li>
+                        <li class="nav-item"><a href="{{ route('license.all') }}" class="nav-link">Danh sách License</a></li>
                     </ul>
                 </li>
 
