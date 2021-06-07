@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 
 class createCodeLicenseRequest extends FormRequest
@@ -24,7 +25,16 @@ class createCodeLicenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|unique:licenses'
+            'code' => [
+                'required',
+                'min:5',
+                function ($attribute, $value, $fail) {
+                    $license = DB::table('licenses')
+                        ->whereRaw('BINARY `code` = ?', $value)->first();
+                    if($license) {
+                        $fail('A location named '. $value .' already exists');
+                    };
+                }]
         ];
     }
 }

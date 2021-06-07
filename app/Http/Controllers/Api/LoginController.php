@@ -28,8 +28,7 @@ class LoginController extends Controller
      * check login of App,use JWT
      */
     public function checkLoginApple($token,$provider){
-        // return ($token);
-        //return $provider;
+      
         $checkToken = true;
         $keySet = config('global.KEY_SET');
         try {
@@ -91,7 +90,7 @@ class LoginController extends Controller
             }
         } catch (\Throwable $th) {
             Log::debug($th->getMessage());
-            return $this->responseFail("provider không được phép 2 !");
+            return $this->responseFail($th->getMessage());
         }
         
     }
